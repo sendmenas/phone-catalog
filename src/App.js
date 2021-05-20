@@ -1,35 +1,25 @@
-import { useEffect, useState } from "react";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Redirect,
-} from "react-router-dom";
-import { BrandList } from "./components/BrandList";
-import { BrandPage } from "./components/BrandPage";
-import { BRANDS } from "./utils/apiUrls";
-import { getData } from "./utils/api";
+import { Router, Switch, Route, Redirect } from "react-router-dom";
+import { BrandsPage } from "./components/BrandsPage";
+import { BrandsList } from "./components/BrandsList";
+
+import { ErrorPage } from "./components/ErrorPage";
+import { history } from "./utils/history";
 
 const App = () => {
-  const [isLoading, setLoader] = useState(false);
-  const [brands, setBrands] = useState({});
-
-  useEffect(() => {
-    getData(BRANDS, setBrands);
-  }, []);
-
   return (
-    <Router>
-      <h1>List</h1>
+    <Router history={history}>
       <Switch>
         <Route exact path="/">
           <Redirect to="/phones" />
         </Route>
         <Route exact path="/phones">
-          <BrandList items={brands.options} />
+          <BrandsPage />
         </Route>
         <Route path={`/phones/:brand`}>
-          <BrandPage />
+          <BrandsList />
+        </Route>
+        <Route exact path="/error">
+          <ErrorPage />
         </Route>
       </Switch>
     </Router>
